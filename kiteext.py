@@ -1,5 +1,7 @@
 import urllib.parse
 import json
+
+import dateutil
 import kiteconnect.exceptions as ex
 import logging
 from six.moves.urllib.parse import urljoin
@@ -92,6 +94,23 @@ class KiteExt(KiteConnect):
                 f'userid cannot be none, either login with credentials first or set userid here')
         return KiteTicker(api_key=api_key, access_token='&user_id='+self.user_id+'&enctoken='+urllib.parse.quote(self.enctoken), root='wss://ws.zerodha.com')
 
+    # def historical_data(self, instrument_token, from_date, to_date, interval, continuous=True, oi=False):
+    #     params = {"from": from_date,
+    #               "to": to_date,
+    #               "interval": interval,
+    #               "continuous": 1 if continuous else 0,
+    #               "oi": 1 if oi else 0}
+    #     lst = self.session.get(
+    #         f"{self.root_url}/instruments/historical/{instrument_token}/{interval}", params=params,
+    #         headers=self.headers).json()["data"]["candles"]
+    #     records = []
+    #     for i in lst:
+    #         record = {"date": dateutil.parser.parse(i[0]), "open": i[1], "high": i[2], "low": i[3],
+    #                   "close": i[4], "volume": i[5], }
+    #         if len(i) == 7:
+    #             record["oi"] = i[6]
+    #         records.append(record)
+    #     return records
 
 # NOTE NEW
     def _request(self, route, method, url_args=None, params=None, is_json=False, query_params=None):
